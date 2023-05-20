@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contiguous Scheduling</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="stylesfile.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+</head>
+<body>
+  <div class="container" style="background-color: rgb(233, 203, 203);">
+    </br>
+    <div class="jumbotron">
+      <h1 style="margin-left: 22px;">CONTIGUOUS ALLOCATION</h1>
+      <script>
+        function option(nameSelect) {
+          console.log(nameSelect);
+          document.getElementById("admDivCheck").style.display = "none";
+        }
+      </script>
+      </br>
+      <form>
+        <fieldset>
+          <div class="row">
+            <div class="form-group" style="margin-left:50px; float:left; width: 63%">
+              <label class="col-form-label" for="inputDefault"><h5>Number Of Blocks</h5></label>
+              <input class="form-control" id="numBlocks" name="numBlocks" type="text" size="35" placeholder="Number of Blocks">
+            </div>
+            <div class="form-group" style="margin-left:50px; float:left;  width: 63%">
+              <label class="col-form-label" for="inputDefault"><h5>Block Size</h5></label>
+              <input class="form-control" id="blockSize" name="blockSize" type="text" size="35" placeholder="Block Size">
+            </div>
+            <div class="form-group" style="margin-left:50px; float:left;  width: 63%">
+              <label class="col-form-label" for="inputDefault"><h5>File Input Size</h5></label>
+              <input class="form-control" id="fileInput" name="fileInput" placeholder="Space-separated sequence" type="text" size="35">
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      <form>
+        <btn class="back"><a href="../home.html" style="text-decoration: none;">Back</a></btn>
+        <input type="button" class="button2" value="Submit" onclick="fileAlgorithm()">
+      </form>
+    </div>
+  </div>
+  <br>
+  <br>
+  <script>
+    function fileAlgorithm() {
+      var algorithm = document.getElementById("algorithm").value;
+      var blockSize = parseInt(document.getElementById("blockSize").value);
+      var numBlocks = parseInt(document.getElementById("numBlocks").value);
+      var fileInput = document.getElementById("fileInput").value;
+
+      var files = fileInput.split(" ");
+      var allocationResult = "";
+
+      if (algorithm === "contiguous") {
+        allocationResult = contiguousAllocation(files, numBlocks, blockSize);
+      }
+
+      document.getElementById("allocationResult").innerHTML = allocationResult;
+    }
+
+    function contiguousAllocation(files, numBlocks, blockSize) {
+      var allocatedFiles = [];
+
+      for (var i = 0; i < files.length; i++) {
+        var fileSize = parseInt(files[i]);
+
+        if (fileSize <= blockSize && allocatedFiles.length < numBlocks) {
+          allocatedFiles.push("File " + (i + 1) + ": Allocated");
+        } else {
+          allocatedFiles.push("File " + (i + 1) + ": Not Allocated");
+        }
+      }
+
+      return allocatedFiles.join("<br>");
+    }
+  </script>
+  <br>
+  <br>
+  <div class="container">
+    <div id="allocationResult" style="background-color: rgb(69, 204, 159); color:white; font-weight: 400 bolder; border-radius: 10px;"></div>
+  </div>
+  <div class="container">
+    <div id="alg_name"></div>
+    <div id="Print"></div>
+  </div>
+  <br>
+  <br>
+</body>
+</html>
