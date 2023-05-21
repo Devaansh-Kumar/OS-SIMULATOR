@@ -396,10 +396,18 @@ function start_animation(){
     setTimeout(() => animateRotation(order, start_location, direction, num_sectors),1000);
   } else if (document.getElementById('look').checked){
     alert("look");
+    var order = lookDiskScheduling(access_location, start_location, direction);
+    console.log(order);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
   } else if (document.getElementById('clook').checked){
-    alert("clook");
+    var order = clookDiskScheduling(access_location, start_location);
+    console.log(order);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
   } else if (document.getElementById('cscan').checked){
     alert("cscan");
+    var order = cscanDiskScheduling(access_location, start_location, num_sectors);
+    console.log(order);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
   } else if (document.getElementById('sstf').checked){
     console.log(sstfDiskScheduling(access_location,start_location));
     var order = sstfDiskScheduling(access_location,start_location);
