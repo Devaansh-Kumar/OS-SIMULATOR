@@ -1,6 +1,12 @@
 # This is the list of people who contributed to this project
-- Adithya M S      First fit, Best fit, Next fit, Worst fit, Producer Consumer Problem, Readers Writers Problem.
-- Akash Prasad     Disk Scheduling Algorithms (FCFS, SSTF, SCAN, C-SCAN)
-- Shashank J Bennehalli       MFT, MVT
-- Ashish Bharath (201CS208) - SHA1, SHA256, Md4, Md5, Website management and templating
-- Ajay Vikram P    First In First Out, Optimal and Least Recently Used Page Replacement Algorithms
+
+- 211CS111 CALVIN DOMINIC FERNANDES
+- 211CS112 CHAITRA SRIKUMAR
+- 211CS113 CHANDDAN H                  -> File Allocation
+- 211CS114 CHINMAY SHARMA T            -> Process Scheduling
+- 211CS115 CHINMAYA SAHU               -> Disk Scheduling
+- 211CS116 CHIRAG CHAUDHRY
+- 211CS117 DASARI SAKETH               -> Dining Philosopher
+- 211CS118 DEEPAK VERMA                -> Reader Writer, Producer Consumer
+- 211CS119 DEVAANSH KUMAR              -> Landing Page, Memory Fit
+- 211CS120 DEVASHISH KUMAR             -> Bankers Algorithm
