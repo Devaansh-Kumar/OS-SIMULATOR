@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* CSS styles for ring visualization */
+    .ring {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      margin: 50px auto;
+    }
+    .outer-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border: 2px solid gray;
+      border-radius: 50%;
+    }
+    .inner-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      border: 2px solid gray;
+      border-radius: 50%;
+    }
+    .sector-line {
+      position: absolute;
+      width: 2px;
+      height: 300px;
+      background-color: black;
+      transform-origin: top;
+      top: 50%;
+      left: 50%;
+    }
+    .sector-label {
+      position: absolute;
+      font-size: 20px;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      transform: translate(-50%, -50%);
+    }
+    .seek-head {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translate(0%, 00%);
+      width: 2px;
+      height: 275px;
+      background-color: red;
+      transform-origin: bottom;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="ring">
+    <div class="outer-circle"></div>
+    <div class="inner-circle"></div>
+    <div class="seek-head"></div>
+  </div>
+
+  <center>
+    <h1>Select the Algorithm that you want to see in action:</h1>
+    <div>
+      <input type="radio" name="choice" value="First Come First Serve" id="fcfs"/>
+      <label for="fcfs">First Come First Serve</label>
+
+      <input type="radio" name="choice" value="Shortest Seek Time First" id="sstf"/>
+      <label for="sstf">Shortest Seek Time First</label>
+      
+      <input type="radio" name="choice" value="SCAN" id="scan"/>
+      <label for="scan">SCAN</label>
+      
+      <input type="radio" name="choice" value="C-SCAN" id="cscan"/>
+      <label for="cscan">C-SCAN</label>
+
+      <input type="radio" name="choice" value="Look" id="look"/>
+      <label for="look">Look</label>
+
+      <input type="radio" name="choice" value="C-Look" id="clook" />
+      <label for="clook">C-Look</label>
+    </div>
+    
+    
+  </br>
+    <input type="text" placeholder="Enter the seek locations here" id="access_location" value="5 3 2 1 8 10 6"/>
+    <label for="access_location">Access Locations (Space Separated): </label>
+  </br>
+    <input type="text" placeholder="Start Location" id="start_location" value="3"/>
+    <label for="start_location">Start Location</label>
+  </br>
+  <input type="text" placeholder="Number of sectors" id="num_sectors" value="10"/>
+    <label for="num_sectors">Number of Sectors</label>
+  </br>
+    <div>
+      <p>Which direction do you want to move in?</p>
+      <input type="radio" name="dir" value="left" id="left" />
+      <label for="left">Left</label>
+      <input type="radio" name="dir" value="right" id="right" />
+      <label for="right">Right</label>
+    </div>
+  </br>
+    <button name="animate" onclick="start_animation()">Animate</button>
+
+  </center>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script>
+    
+    // JavaScript loop to create sector lines and labels
+    var ring = document.querySelector('.ring');
+    var numSectors = Number(document.getElementById('num_sectors').value);
+    var sectorAngle = 360 / numSectors;
+    var constant = 15;
+
+    for (var i = 0; i < numSectors; i++) {
+      var sectorLine = document.createElement('div');
+      sectorLine.className = 'sector-line';
+      sectorLine.style.transform = `translate(-50%, 0%) rotate(${sectorAngle * i}deg)`;
+      ring.appendChild(sectorLine);
+
+      var sectorLabel = document.createElement('div');
+      sectorLabel.className = 'sector-label';
+      sectorLabel.textContent = ((i)%numSectors+1).toString();
+      sectorLabel.style.transform = `translate(${sectorAngle*2}px, 260px) rotate(${-sectorAngle * i}deg)`;
+      sectorLine.appendChild(sectorLabel);
+    }
+
+    var seekHead = document.querySelector('.seek-head');
+
+  
+
+    //var degreesList = [45, 135, 225, 315]; // List of degrees to rotate to
+    function convert_sectors_to_degrees(sectorsList){
+      var results = [];
+      var offset = 180-180/numSectors;
+      for (let i = 0;i<sectorsList.length;i++){
+        results.push(((sectorsList[i]-1)*360/numSectors + offset)%360);
+      }
+
+      return results;
+    }
+
+
+    function animateRotation(degreesList,sectorsList) {
+      var currentIndex = 0;
+      function animateNextRotation() {
+        var targetRotation = degreesList[currentIndex];
+        var targetSector = sectorsList[currentIndex];
+
+        anime({
+          targets: seekHead,
+          rotate: targetRotation + 'deg',
+          duration: 1000,//10*(Math.abs(targetRotation-degreesList[(currentIndex+1) % degreesList.length])),
+          easing: 'linear',
+          complete: function() {
+            alert(`Accessed location ${targetSector}`);
+            if (currentIndex !== degreesList.length-1){
+              currentIndex = (currentIndex + 1) % degreesList.length;
+              animateNextRotation();
+            }
+          }
+        });
+      }
+      animateNextRotation();
+    }
+      animateRotation(degreesList);
+
+  function sstfDiskScheduling(requests, initialPosition) {
+  // Create a copy of the requests array to avoid modifying the original array
+  const remainingRequests = [...requests];
+  // Initialize the current head position
+  let currentPosition = initialPosition;
+  // Initialize the array to store the order of accesses
+  const orderOfAccesses = [];
+
+  while (remainingRequests.length > 0) {
+    // Find the request with the shortest seek time
+    let shortestSeekTime = Infinity;
+    let shortestSeekIndex = -1;
+
+    for (let i = 0; i < remainingRequests.length; i++) {
+      const seekTime = Math.abs(currentPosition - remainingRequests[i]);
+
+      if (seekTime < shortestSeekTime) {
+        shortestSeekTime = seekTime;
+        shortestSeekIndex = i;
+      }
+    }
+
+    // Move the head to the chosen request
+    currentPosition = remainingRequests[shortestSeekIndex];
+
+    // Add the accessed location to the order of accesses
+    orderOfAccesses.push(remainingRequests[shortestSeekIndex]);
+
+    // Remove the accessed location from the remaining requests
+    remainingRequests.splice(shortestSeekIndex, 1);
+  }
+
+  return orderOfAccesses;
+}
+
+function scanDiskScheduling(requests, initialPosition, direction = 'left', maxTrack) {
+  alert("hello");
+  // Create a copy of the requests array to avoid modifying the original array
+  var remainingRequests = [...requests];
+  // Initialize the current head position
+  let currentPosition = initialPosition;
+  // Initialize the array to store the order of accesses
+  var orderOfAccesses = [];
+
+  // Sort the requests in ascending order
+  remainingRequests.sort((a, b) => (a - b));
+
+  var just_greater_index;
+  if (direction === "left"){
+    just_greater_index = 0;
+  }
+
+  for (let i = 0;i<remainingRequests.length;i++){
+    if (remainingRequests[i] >= remainingRequests[currentPosition]){
+      just_greater_index = i;
+      break;
+    }
+  }
+
+
+
+  for (let i = just_greater_index; i<remainingRequests.length;i++){
+    orderOfAccesses.push(remainingRequests[i]);
+  }
+  if (just_greater_index !== 0){
+    for (let i = just_greater_index -1;i>=0;i--){
+      orderOfAccesses.push(remainingRequests[i]);
+    }
+  }
+
+  
+
+  return orderOfAccesses;
+}
+
+function cscanDiskScheduling(requests, initialPosition, maxTrack) {
+  // Create a copy of the requests array to avoid modifying the original array
+  const remainingRequests = [...requests];
+  // Initialize the current head position
+  let currentPosition = initialPosition;
+  // Initialize the array to store the order of accesses
+  const orderOfAccesses = [];
+
+  // Sort the requests in ascending order
+  remainingRequests.sort((a, b) => a - b);
+
+  // Find the position of the initial head position in the sorted requests
+  const initialPositionIndex = remainingRequests.findIndex((request) => request >= currentPosition);
+
+  // Handle the requests after the initial position
+  for (let i = initialPositionIndex; i < remainingRequests.length; i++) {
+    orderOfAccesses.push(remainingRequests[i]);
+  }
+
+  // Handle the requests before the initial position
+  for (let i = 0; i < initialPositionIndex; i++) {
+    orderOfAccesses.push(remainingRequests[i]);
+  }
+
+  // Add the maximum track to the order of accesses
+  orderOfAccesses.push(maxTrack);
+
+  // Return the order of accesses
+  return orderOfAccesses;
+}
+
+
+function lookDiskScheduling(requests, initialPosition, direction = 'left') {
+  // Create a copy of the requests array to avoid modifying the original array
+  const remainingRequests = [...requests];
+  // Initialize the current head position
+  let currentPosition = initialPosition;
+  // Initialize the array to store the order of accesses
+  const orderOfAccesses = [];
+
+  // Sort the requests in ascending order
+  remainingRequests.sort((a, b) => a - b);
+
+  while (remainingRequests.length > 0) {
+    // Find the next request in the current direction
+    let nextRequestIndex = -1;
+
+    if (direction === 'left') {
+      // Find the request with the highest track value less than or equal to the current position
+      for (let i = remainingRequests.length - 1; i >= 0; i--) {
+        if (remainingRequests[i] <= currentPosition) {
+          nextRequestIndex = i;
+          break;
+        }
+      }
+    } else if (direction === 'right') {
+      // Find the request with the lowest track value greater than or equal to the current position
+      for (let i = 0; i < remainingRequests.length; i++) {
+        if (remainingRequests[i] >= currentPosition) {
+          nextRequestIndex = i;
+          break;
+        }
+      }
+    }
+
+    // If no request is found in the current direction, change direction
+    if (nextRequestIndex === -1) {
+      if (direction === 'left') {
+        direction = 'right';
+        continue; // Skip to the next iteration
+      } else if (direction === 'right') {
+        direction = 'left';
+        continue; // Skip to the next iteration
+      }
+    }
+
+    // Move the head to the chosen request
+    currentPosition = remainingRequests[nextRequestIndex];
+
+    // Add the accessed location to the order of accesses
+    orderOfAccesses.push(remainingRequests[nextRequestIndex]);
+
+    // Remove the accessed location from the remaining requests
+    remainingRequests.splice(nextRequestIndex, 1);
+  }
+
+  return orderOfAccesses;
+}
+
+function clookDiskScheduling(requests, initialPosition) {
+  // Create a copy of the requests array to avoid modifying the original array
+  const remainingRequests = [...requests];
+  // Initialize the current head position
+  let currentPosition = initialPosition;
+  // Initialize the array to store the order of accesses
+  const orderOfAccesses = [];
+
+  // Sort the requests in ascending order
+  remainingRequests.sort((a, b) => a - b);
+
+  // Find the position of the initial head position in the sorted requests
+  const initialPositionIndex = remainingRequests.findIndex((request) => request >= currentPosition);
+
+  // Handle the requests after the initial position
+  for (let i = initialPositionIndex; i < remainingRequests.length; i++) {
+    orderOfAccesses.push(remainingRequests[i]);
+  }
+
+  // Handle the requests before the initial position
+  for (let i = 0; i < initialPositionIndex; i++) {
+    orderOfAccesses.push(remainingRequests[i]);
+  }
+
+  // Return the order of accesses
+  return orderOfAccesses;
+}
+
+function start_animation(){
+  let access_location = document.getElementById('access_location').value.split(" ").map((num) => Number(num));
+  let start_location = Number(document.getElementById('start_location').value);
+  let num_sectors = Number(document.getElementById('num_sectors').value);
+
+  let direction;
+
+  if (document.getElementById('left').checked){
+    direction = 'left';
+  } else if (document.getElementById('right').checked){
+    direction = 'right';
+  }
+
+  console.log(`Access Locations are: ${access_location}`);
+  //console.log(`Degree locations are ${deg_access_location}`);
+  console.log(typeof(access_location[0]));
+  console.log(`Start location is ${start_location}`);
+  console.log(`Number of sectors are ${num_sectors}`);
+  console.log(`The direction you want to move in is ${direction}`);
+
+  seekHead.style.transform = `rotate(${convert_sectors_to_degrees([start_location])[0]}deg)`;
+  setTimeout(() => alert("The animation will start now!"),1000);
+
+  if (document.getElementById('fcfs').checked){
+    //animateRotation(convert_sectors_to_degrees([...access_location]));
+    setTimeout(() => animateRotation(convert_sectors_to_degrees([...access_location]),access_location),1000);
+  } else if (document.getElementById('scan').checked){
+    var order = scanDiskScheduling(convert_sectors_to_degrees(access_location),access_location);
+    console.log(order);
+    setTimeout(() => animateRotation(order, start_location, direction, num_sectors),1000);
+  } else if (document.getElementById('look').checked){
+    alert("look");
+    var order = lookDiskScheduling(access_location, start_location, direction);
+    console.log(order);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
+  } else if (document.getElementById('clook').checked){
+    var order = clookDiskScheduling(access_location, start_location);
+    console.log(order);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
+  } else if (document.getElementById('cscan').checked){
+    alert("cscan");
+    var order = cscanDiskScheduling(access_location, start_location, num_sectors);
+    console.log(order);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
+  } else if (document.getElementById('sstf').checked){
+    console.log(sstfDiskScheduling(access_location,start_location));
+    var order = sstfDiskScheduling(access_location,start_location);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
+  }
+}
+
+
+  </script>
+</body>
+</html>
