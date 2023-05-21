@@ -133,28 +133,28 @@
             <p style="margin-left: 150px;">Contignous Allocation</p>
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0 content d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
-            <h3>Contignous Allocation</h3>
+            <h3 style="font-size: 45px";> Contignous Allocation</h3>
             <ul>
               <li>
                 <i class="bx bx-store-alt"></i>
                 <div>
-                  <h5>Address of starting block</h5>
+                  <h5 style="color: red";>Address of starting block</h5>
                   <p>In the figure displayed the file mail starts from block 19.</p>
                 </div>
               </li>
               <li>
                 <i class="bx bx-images"></i>
                 <div>
-                  <h5>Length of Allocated portion required</h5>
+                  <h5 style="color: red";>Length of Allocated portion required</h5>
                   <p>The length of the file "mail" is 6 blocks</p>
                 </div>
               </li>
             </ul>
-            <h4>Advantages</h4>
+            <h4 style="color: rgba(0, 255, 0, 0.967)";>Advantages</h4>
             <p>
               Allows both sequential access and direct access as block allocation is similar to the array.The seek time is less because of the contiguous allocation of blocks;this makes it very fast.
             </p>
-            <h4>Disadvantages</h4>
+            <h4 style="color: rgba(0, 255, 0, 0.967)";>Disadvantages</h4>
             <p>
               Suffers from both Internal and external fragmentation .The size of the file can be increased only if free contiguous  blocks are available..
             </p>
@@ -167,27 +167,27 @@
             <img src="assets/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
             <p style="margin-left: 150px;">Linked Allocation</p>
           </div>
-          <div class="col-lg-6 pt-4 pt-lg-0 content d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
-            <h3>Linked Allocation</h3>
+          <div class="col-lg-6 pt-4 pt-lg-0 content d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100" style="margin-top: 200px">
+            <h3 style="font-size: 45px";>Linked Allocation</h3>
             <ul>
               <li>
                 <i class="bx bx-store-alt"></i>
                 <div>
-                  <h5>Need not be contignous</h5>
+                  <h5 style="color: red";>Need not be contignous</h5>
                   <p>In the figure shown starting is 9 and ending is 25 which shows that it is not contignous.</p>
                 </div>
               </li>
               <li>
                 <i class="bx bx-images"></i>
                 <div>
-                  <h5>Each block contains a pointer to the next block of memory.</h5>
+                  <h5 style="color: red";>Each block contains a pointer to the next block of memory.</h5>
                 </div>
               </li>
             </ul>
-            <h4>Advantages</h4>
+            <h4 style="color: rgba(0, 255, 0, 0.967)";>Advantages</h4>
             <p>
               This is very flexible in terms of file size.This method does not suffer from external fragmentaion</p>
-            <h4>Disadvantages</h4>
+            <h4 style="color: rgba(0, 255, 0, 0.967)";>Disadvantages</h4>
             <p>
               It does not support random or direct access.We can not directly access the blocks of a file. A block k of a file can be accessed by traversing k blocks sequentially (sequential access ) from the starting block of the file via block pointers.Pointers required in the linked allocation incur some extra overhead
             </p>
