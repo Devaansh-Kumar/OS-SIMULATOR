@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Banker's Algorithm</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+        <script type="text/javascript" src="banker.js"></script>
+    </head>
+    <body>
+		<div class="p-3 mb-2 bg-light text-dark">
+			<h1 style="text-align: center;">Banker's Safety Algorithm</h1>
+		</div>
+        <br>
+        <div class="container">
+               
+				<div class="jumbotron" style="background-color: white;border-color: black;">
+					<center>
+						<form name = "resource" style="display:inline-block; margin: auto 5%;width: 90%;">
+							<div class = "form-group" style="float:center; width: 50%">
+							<label>Number of Resource types:</label><input class="form-control" type="Number" onkeyup="BuildFormFields(parseInt(this.value, 10));" />
+							<div id="FormFields"></div>
+							</div>
+						</form>
+					</center>
+					<center>
+						<form name = "Need" style="display:inline-block; margin: auto 5%;width: 90%;">
+							<div class = "form-group" style="float:center;width: 50%">
+								<label>Number of Processes:</label> <input class="form-control" type="Number" onkeyup="BuildFormFields2(y = parseInt(this.value, 10));" />
+								<div id="FormFields1"></div>
+								</div>
+						</form>
+					</center>
+					<center>
+						<form name = "Alloc" style="margin:5% auto;width: 90%;">
+							<div class = "form-group" style="float:center;width: 50%">
+						   <div id="FormFields2"></div>
+						   </div>
+					   </form>
+					</center>
+
+					<table id="tab_need" class="table table-striped  table-hover">
+
+					</table>
+
+			        <table id="tab_alloc" class="table table-striped table-hover">
+
+
+					</table>
+
+			        <ul id = "printing">
+
+			        </ul>
+		        </div>
+				<center>
+					<div class="panel-footer">
+						<button class="btn btn-primary btn-success" onclick="banker()">Run</button>
+					</div>
+				</center>
+			</div>
+	</body>
+</html>
