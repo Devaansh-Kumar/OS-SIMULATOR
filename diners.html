@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dining Philosophers Simulation</title>
+  <style>
+    body {
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .fork {
+      position: absolute;
+      width: 2px;
+      height: 80px;
+      background-color: #333;
+      transform-origin: bottom;
+    }
+
+    .philosopher {
+      position: relative;
+      margin: 10px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #f2a154;
+      text-align: center;
+      line-height: 120px;
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .philosopher.eating {
+      background-color: #4caf50;
+    }
+
+    .philosopher.hungry {
+      background-color: #f2a154;
+    }
+
+    .philosopher.thinking {
+      background-color: #2196f3;
+    }
+
+    #input-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    input[type="number"] {
+      padding: 5px;
+      width: 50px;
+    }
+
+    #start-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    #start-button:hover {
+      background-color: #45a049;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .action-buttons button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+
+    .action-buttons button.thinking {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .action-buttons button.hungry {
+      background-color: #f2a154;
+      color: #fff;
+    }
+
+    .action-buttons button.eating {
+      background-color: #4caf50;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div id="input-container">
+    <label for="philosopher-input">Number of Philosophers:</label>
+    <input type="number" id="philosopher-input" min="2" value="5">
+    <button id="start-button">Start Simulation</button>
+  </div>
+  <div class="container" id="container"></div>
+  <div class="action-buttons" id="action-buttons"></div>
+
+  <script>
+    let numPhilosophers = 5; // Default number of philosophers
+
+    // Function to simulate the dining philosopher problem
+    function simulateDiners() {
+      const forks = Array.from({ length: numPhilosophers }, (_, index) => false); // Fork availability array
+      const philosophers = Array.from({ length: numPhilosophers }, (_, index) => ({
+        state: 'thinking',
+        button: null,
+        philosopherElem: null,
+      }));
+
+      function eat(index) {
+        // Get left and right fork indices
+        const leftFork = index;
+        const rightFork = (index + 1) % numPhilosophers;
+
+        // Check if both forks are available
+        if (!forks[leftFork] && !forks[rightFork]) {
+          forks[leftFork] = true;
+          forks[rightFork] = true;
+          philosophers[index].state = 'eating';
+        }
+      }
+
+      function putDownForks(index) {
+        // Get left and right fork indices
+        const leftFork = index;
+        const rightFork = (index + 1) % numPhilosophers;
+
+        // Release both forks
+        forks[leftFork] = false;
+        forks[rightFork] = false;
+        philosophers[index].state = 'thinking';
+      }
+
+      function updatePhilosophers() {
+        for (let i = 0; i < numPhilosophers; i++) {
+          const philosopher = philosophers[i];
+          const button = philosopher.button;
+          const philosopherElem = philosopher.philosopherElem;
+
+          switch (philosopher.state) {
+            case 'thinking':
+              button.textContent = 'Thinking';
+              button.classList.remove('hungry', 'eating');
+              button.classList.add('thinking');
+              philosopherElem.classList.remove('hungry', 'eating');
+              philosopherElem.classList.add('thinking');
+              break;
+            case 'hungry':
+              button.textContent = 'Hungry';
+              button.classList.remove('thinking', 'eating');
+              button.classList.add('hungry');
+              philosopherElem.classList.remove('thinking', 'eating');
+              philosopherElem.classList.add('hungry');
+              break;
+            case 'eating':
+              button.textContent = 'Eating';
+              button.classList.remove('thinking', 'hungry');
+              button.classList.add('eating');
+              philosopherElem.classList.remove('thinking', 'hungry');
+              philosopherElem.classList.add('eating');
+              break;
+          }
+        }
+      }
+
+      function simulateActions() {
+        // Function to randomly select a philosopher to perform an action
+        function selectPhilosopher() {
+          return Math.floor(Math.random() * numPhilosophers);
+        }
+
+        let intervalTime = 1000; // Initial interval time
+
+        setInterval(() => {
+          const philosopherIndex = selectPhilosopher();
+          const philosopher = philosophers[philosopherIndex];
+
+          switch (philosopher.state) {
+            case 'thinking':
+              philosopher.state = 'hungry';
+              break;
+            case 'hungry':
+              eat(philosopherIndex);
+              break;
+            case 'eating':
+              putDownForks(philosopherIndex);
+              break;
+          }
+
+          updatePhilosophers();
+        }, intervalTime);
+
+        setInterval(() => {
+          intervalTime *= 0.7; // Reduce interval time by 30%
+        }, 5000); // Change interval time every 5 seconds
+      }
+
+      function createPhilosophers() {
+        const container = document.getElementById('container');
+        const actionButtons = document.getElementById('action-buttons');
+
+        // Clear previous elements
+        container.innerHTML = '';
+        actionButtons.innerHTML = '';
+
+        // Create philosopher elements and buttons
+        for (let i = 0; i < numPhilosophers; i++) {
+          const philosopher = document.createElement('div');
+          philosopher.className = 'philosopher';
+          philosopher.textContent = i + 1;
+          container.appendChild(philosopher);
+
+          const button = document.createElement('button');
+          button.textContent = 'Thinking';
+          button.classList.add('thinking');
+
+          philosophers[i].button = button;
+          philosophers[i].philosopherElem = philosopher;
+
+          actionButtons.appendChild(button);
+        }
+
+        updatePhilosophers();
+      }
+
+      createPhilosophers();
+      simulateActions();
+    }
+
+    // Start simulation when the button is clicked
+    document.getElementById('start-button').addEventListener('click', () => {
+      numPhilosophers = parseInt(document.getElementById('philosopher-input').value, 10);
+      simulateDiners();
+    });
+  </script>
+</body>
+</html>
