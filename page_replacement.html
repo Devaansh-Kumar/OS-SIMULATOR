@@ -24,11 +24,11 @@
     }
 
     .first {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #f8f9fa;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #C5D2E0;
     }
 
     .second {
@@ -59,42 +59,44 @@
     }
 </style>
 
-<body>
+<body style="background-color: darkorange">
     <div class="container">
-        <div class="first card border border-dark">
-            <div class="heading">
-                <h1>PAGE REPLACEMENT VISUALIZER</h1>
+        <div class="first card border border-dark p-3" >
+          <div class="heading">
+                <h1>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Visualizer for Page Replacement&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h1>
             </div>
-            Enter the Stream of Pages :
-            <div class="input-string">
-                <input type="text" id="input_string">
-            </div>
-            Enter the number of Frames :
-            <div class="frame-size">
-                <input id="frame_size" placeholder="" type="number" name="frame" min="1">
-            </div>
-            <label for="algo">Choose the Algorithm : </label>
-            <div class="algorithm">
-                <select id="drop_down" name="algo" required>
-                    <option value="" disabled selected>Select your option</option>
-                    <option value="FIFO">First In First Out</option>
-                    <option value="Optimal">Optimal</option>
-                    <option value="LRU">Least Recently Used</option>
-                </select>
-            </div>
+               
+                                        			   
+    
+<div class="input-string">
+	
+	 <label for="inp">Enter the Stream of Pages: <label/>    <input type="text" name="inp" id="input_string">
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class="frame-size">
+		   <label for="frame">Number of Frames :  <label/>  
+      <input id="frame_size"  placeholder="" type="number" name="frame" min="1">
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span class="algorithm">
+		 <label for="algo">Choose the Algorithm : </label>
+          <select id="drop_down" name="algo" required>
+            <option value="" disabled selected>Select your option</option>
+            <option value="FIFO">First In First Out</option>
+            <option value="Optimal">Optimal</option>
+            <option value="LRU">Least Recently Used</option>
+          </select>
+          </span></div>
+            <div class="frame-size"></div>
+            <div class="algorithm"></div>
             <div class="button">
                 <input id="btn1" type="button" onclick="disableButton1(); showDiv(); visualize();"
                     class="frmBtn btn btn-lg btn-block btn-success" value="VISUALIZE">
-            </div>
-            <div class="button">
-                <input id="btn2" type="button" onclick="enableButton1(); reset();"
+              <input id="btn2" type="button" onClick="enableButton1(); reset();"
                     class="frmBtn btn btn-lg btn-block btn-danger" value="RESET">
             </div>
+            <div class="button"></div>
 
         </div>
         <div class="second" id="SUM" style="display:none;">
             <div class="heading">
-                <h1>VISUALIZATION AND SUMMARY</h1>
+                <h1><center>Algorithm Summary</center></h1>
             </div>
             <div class="data">
                 <table id="tbl" class="table table-bordered">
@@ -192,12 +194,12 @@
                 }
                 if (s == 0) {
                     cell = row.insertCell((k++));
-                    cell.innerHTML = "Miss";
+                    cell.innerHTML = "Page Miss";
                     cell.style.backgroundColor = "rgb(255, 77, 77)";
                 }
                 else {
                     cell = row.insertCell((k++));
-                    cell.innerHTML = "Hit";
+                    cell.innerHTML = "Page Hit";
                     cell.style.backgroundColor = "rgb(121, 255, 77)";
                 }
 
@@ -205,9 +207,9 @@
 
             hitRate = (pageHits / numberOfPages) * 100;
             missRate = (pageFaults / numberOfPages) * 100;
-
-            document.getElementById("page_miss").innerHTML = "Total Number Of Page Faults : " + `<b>${pageFaults}</b>`;
-            document.getElementById("page_hits").innerHTML = "Total Number Of Page Hits : " + `<b>${pageHits}</b>`;
+			document.getElementById("page_miss").innerHTML = "Algorithm : " + `<b>${dropDown}</b>`;
+            document.getElementById("page_miss").innerHTML = "Page Faults : " + `<b>${pageFaults}</b>`;
+            document.getElementById("page_hits").innerHTML = "Page Hits : " + `<b>${pageHits}</b>`;
             document.getElementById("miss_rate").innerHTML = "Page Miss Rate : " + `<b>${missRate.toFixed(2)}%</b>`;
             document.getElementById("hit_rate").innerHTML = "Page Hit Rate : " + `<b>${hitRate.toFixed(2)}%</b>`;
         }
