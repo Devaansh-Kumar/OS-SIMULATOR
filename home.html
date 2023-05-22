@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guide To System Calls In OS</h1>
+    <p>Introduction of System Call</p>
+    <p>In computing, a system call is a programmatic way in which a computer program requests a service from the kernel of the operating system it is executed on. A system call is a way for programs to interact with the operating system. A computer program makes a system call when it makes a request to the operating system’s kernel. System call provides the services of the operating system to the user programs via Application Program Interface (API). It provides an interface between a process and an operating system to allow user-level processes to request services of the operating system. System calls are the only entry points into the kernel system. All programs needing resources must use system calls.</p>
+    
+    <p>A system call is a mechanism used by programs to request services from the operating system (OS). In simpler terms, it is a way for a program to interact with the underlying system, such as accessing hardware resources or performing privileged operations.</p>
+    
+    <p>A system call is initiated by the program executing a specific instruction, which triggers a switch to kernel mode, allowing the program to request a service from the OS. The OS then handles the request, performs the necessary operations, and returns the result back to the program.</p>
+    
+    <p>System calls are essential for the proper functioning of an operating system, as they provide a standardized way for programs to access system resources. Without system calls, each program would need to implement its own methods for accessing hardware and system services, leading to inconsistent and error-prone behavior.</p>
+    
+    <p>Services Provided by System Calls:</p>
+    <ol>
+        <li>Process creation and management</li>
+        <li>Main memory management</li>
+        <li>File Access, Directory, and File system management</li>
+        <li>Device handling (I/O)</li>
+        <li>Protection</li>
+        <li>Networking, etc.</li>
+    </ol>
+    
+    <p>Features of System Calls:</p>
+    <ul>
+        <li>Interface: System calls provide a well-defined interface between user programs and the operating system.</li>
+        <li>Protection: System calls are used to access privileged operations that are not available to normal user programs.</li>
+        <li>Kernel Mode: When a system call is made, the program is temporarily switched from user mode to kernel mode.</li>
+        <li>Context Switching: A system call requires a context switch, which involves saving the state of the current process and switching to the kernel mode to execute the requested service.</li>
+        <li>Error Handling: System calls can return error codes to indicate problems with the requested service.</li>
+        <li>Synchronization: System calls can be used to synchronize access to shared resources.</li>
+    </ul>
+    
+    <p>System calls provide several advantages to programs and the operating system, including:</p>
+        <ul>
+        <li>Access to hardware resources: System calls allow programs to access hardware resources such as disk drives, printers, and network devices.</li>
+        <li>Memory management: System calls provide a way for programs to allocate and deallocate memory, as well as access memory-mapped hardware devices.</li>
+        <li>Process management: System calls allow programs to create and terminate processes, as well as manage inter-process communication.</li>
+        <li>Security: System calls provide a way for programs to access privileged resources, such as the ability to modify system settings or perform operations that require administrative permissions.</li>
+        <li>Standardization: System calls provide a standardized interface for programs to interact with the operating system, ensuring consistency and compatibility across different hardware platforms and operating system versions.</li>
+        </ul>
+        <p>How are system calls made?</p>
+
+        <p>When a computer software needs to access the operating system's kernel, it makes a system call. The system call uses an API to expose the operating system's services to user programs. It is the only method to access the kernel system. All programs or processes that require resources for execution must use system calls, as they serve as an interface between the operating system and user programs.</p>
+        
+        <p>Below are some examples of how a system call varies from a user function:</p>
+        <ol>
+            <li>A system call function may create and use kernel processes to execute asynchronous processing.</li>
+            <li>A system call has greater authority than a standard subroutine. A system call with kernel-mode privilege executes in the kernel protection domain.</li>
+            <li>System calls are not permitted to use shared libraries or any symbols that are not present in the kernel protection domain.</li>
+            <li>The code and data for system calls are stored in global kernel memory.</li>
+        </ol>
+        
+        <p>Why do you need system calls in Operating System?</p>
+        
+        <p>There are various situations where you must require system calls in the operating system. Some of the situations include:</p>
+        <ul>
+            <li>When a file system wants to create or delete a file.</li>
+            <li>Network connections require system calls to send and receive data packets.</li>
+            <li>If you want to read or write a file, you need to use system calls.</li>
+            <li>If you want to access hardware devices, including a printer or scanner, you need system calls.</li>
+            <li>System calls are used to create and manage new processes.</li>
+        </ul>
+        
+        <p>How System Calls Work</p>
+        
+        <p>The applications run in an area of memory known as user space. A system call connects to the operating system's kernel, which executes in kernel space. When an application makes a system call, it must first obtain permission from the kernel. It achieves this using an interrupt request, which pauses the current process and transfers control to the kernel.</p>
+        
+        <p>If the request is permitted, the kernel performs the requested action, such as creating or deleting a file. The application receives the kernel's output as input. The application resumes the procedure after receiving the input. When the operation is finished, the kernel returns the results to the application and then moves data from kernel space to user space in memory.</p>
+        
+        <p>A simple system call may take a few nanoseconds to provide the result, like retrieving the system date and time. A more complicated system call, such as connecting to a network device, may take a few seconds. Most operating systems launch a distinct kernel thread for each system call to avoid bottlenecks. Modern operating systems are multi-threaded, which means they can handle various system calls at the same time.</p>
+        <h3>Types of System Calls</h3>
+
+<p>System calls can be categorized into different types based on their functionality:</p>
+<img src="image2.jpg" alt="Sample image" width="500">
+<ol>
+    <li>Process Control</li>
+    <li>File Management</li>
+    <li>Device Management</li>
+    <li>Information Maintenance</li>
+    <li>Communication</li>
+</ol>
+
+<h4>Process Control</h4>
+
+<p>Process control system calls are used to direct processes. Examples of process control system calls include creating, loading, aborting, ending, executing, and terminating processes.</p>
+
+<h4>File Management</h4>
+
+<p>File management system calls are used to handle files. Examples of file management system calls include creating files, deleting files, opening, closing, reading, and writing files.</p>
+
+<h4>Device Management</h4>
+
+<p>Device management system calls are used to deal with devices. Examples of device management system calls include reading from devices, writing to devices, getting device attributes, and releasing devices.</p>
+
+<h4>Information Maintenance</h4>
+
+<p>Information maintenance system calls are used to maintain information. Examples of information maintenance system calls include getting system data, setting time or date, getting time or date, and setting system data.</p>
+
+<h4>Communication</h4>
+
+<p>Communication system calls are used for communication. Examples of communication system calls include creating and deleting communication connections, sending and receiving messages, etc.</p>
+
+<h4>Example System Calls:</h4>
+
+<p><code>open()</code></p>
+
+<p>The <code>open()</code> system call allows you to access a file on a file system. It allocates resources to the file and provides a handle that the process may refer to. Many processes can open a file at once or by a single process only. It all depends on the file system and structure.</p>
+
+<p><code>read()</code></p>
+
+<p>It is used to obtain data from a file on the file system. It accepts three arguments in general:</p>
+
+<ul>
+    <li>A file descriptor.</li>
+    <li>A buffer to store read data.</li>
+    <li>The number of bytes to read from the file.</li>
+</ul>
+
+<p>The file descriptor of the file to be read could be used to identify it and open it using <code>open()</code> before reading.</p>
+
+<p><code>wait()</code></p>
+
+<p>In some systems, a process may have to wait for another process to complete its execution before proceeding. When a parent process creates a child process, the parent process execution is suspended until the child process is finished. The <code>wait()</code> system call is used to suspend the parent process. Once the child process has completed its execution, control is returned to the parent process.</p>
+
+<p><code>write()</code></p>
+
+<p>It is used to write data from a user buffer to a device like a file. This system call is one way for a program to generate data. It takes three arguments in general:</p>
+
+<ul>
+    <li>A file descriptor.</li>
+    <li>A buffer containing the data to be written.</li>
+    <li>The number of bytes to write to the file.</li>
+</ul>
+
+<p>The file descriptor of the file to be written could be used to identify it and open it using <code>open()</code> before writing.</p>
+
+<p>These are just a few examples of system calls. There are many more system calls available, each serving a specific purpose and providing an interface for programs to interact with the operating system.</p>
+
+<p>By utilizing system calls, programs can harness the power of the underlying operating system, access hardware resources, manage processes, ensure security, and perform various essential operations that contribute to the overall functionality of an operating system.</p>
+<img src="image3.jpg" alt="Sample Image" width="600">
+<h3>The Bottom Line</h3>
+<p>Overall, system calls are essential for the proper functioning of an operating system and provide a powerful mechanism for programs to interact with the underlying system in a controlled and secure manner.</p>
+</div>
+</body>
+</html>
