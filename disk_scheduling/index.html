@@ -150,6 +150,8 @@
 
     function animateRotation(degreesList,sectorsList) {
       var currentIndex = 0;
+      console.log("The degrees list is ",degreesList);
+      console.log("The sectors list is ",sectorsList);
       function animateNextRotation() {
         var targetRotation = degreesList[currentIndex];
         var targetSector = sectorsList[currentIndex];
@@ -206,45 +208,107 @@
 
   return orderOfAccesses;
 }
-
+/*
 function scanDiskScheduling(requests, initialPosition, direction = 'left', maxTrack) {
-  alert("hello");
+  maxTrack = 360;
   // Create a copy of the requests array to avoid modifying the original array
-  var remainingRequests = [...requests];
+  const remainingRequests = [...requests];
   // Initialize the current head position
-  let currentPosition = initialPosition;
+  let currentPosition = initialPosition*57.29;
   // Initialize the array to store the order of accesses
-  var orderOfAccesses = [];
+  const orderOfAccesses = [];
 
   // Sort the requests in ascending order
-  remainingRequests.sort((a, b) => (a - b));
+  remainingRequests.sort((a, b) => a - b);
 
-  var just_greater_index;
-  if (direction === "left"){
-    just_greater_index = 0;
-  }
+  while (remainingRequests.length > 0) {
+    console.log(remainingRequests.length);
+    // Find the next request in the current scan direction
+    let nextRequestIndex = -1;
 
-  for (let i = 0;i<remainingRequests.length;i++){
-    if (remainingRequests[i] >= remainingRequests[currentPosition]){
-      just_greater_index = i;
-      break;
+    if (direction === 'left') {
+      // Find the request with the highest track value less than or equal to the current position
+      for (let i = remainingRequests.length - 1; i >= 0; i--) {
+        if (remainingRequests[i] <= currentPosition) {
+          nextRequestIndex = i;
+          break;
+        }
+      }
+    } else if (direction === 'right') {
+      // Find the request with the lowest track value greater than or equal to the current position
+      for (let i = 0; i < remainingRequests.length; i++) {
+        if (remainingRequests[i] >= currentPosition) {
+          nextRequestIndex = i;
+          break;
+        }
+      }
     }
-  }
 
-
-
-  for (let i = just_greater_index; i<remainingRequests.length;i++){
-    orderOfAccesses.push(remainingRequests[i]);
-  }
-  if (just_greater_index !== 0){
-    for (let i = just_greater_index -1;i>=0;i--){
-      orderOfAccesses.push(remainingRequests[i]);
+    // If no request is found in the current direction, change direction
+    if (nextRequestIndex === -1) {
+      if (direction === 'left') {
+        direction = 'right';
+        continue; // Skip to the next iteration
+      } else if (direction === 'right') {
+        direction = 'left';
+        continue; // Skip to the next iteration
+      }
     }
+
+    // Move the head to the chosen request
+    currentPosition = remainingRequests[nextRequestIndex];
+
+    // Add the accessed location to the order of accesses
+    orderOfAccesses.push(remainingRequests[nextRequestIndex]);
+    console.log(nextRequestIndex);
+
+    // Remove the accessed location from the remaining requests
+    remainingRequests.splice(nextRequestIndex, 1);
   }
 
-  
+  // If there are remaining requests, add the maximum track to the order of accesses
+  if (remainingRequests.length > 0) {
+    orderOfAccesses.push(maxTrack);
+  }
+
+  console.log("The order of accesses in scan is");
+  console.log(orderOfAccesses);
 
   return orderOfAccesses;
+}*/
+
+function scanDiskScheduling(requests, start, dir = "left",maxTrack) {
+  let direction;// 1 for moving towards the higher sector, -1 for moving towards the lower sector
+  if (dir === "left") direction = 1;
+  else direction = 0;
+
+  // Sort the requests in ascending order
+  requests.sort((a, b) => a - b);
+
+  const result = [];
+
+  // Find the index where the current head position should be inserted
+  let currentIndex = 0;
+  while (currentIndex < requests.length && requests[currentIndex] < start) {
+    currentIndex++;
+  }
+
+  // Move towards the higher sector until the end
+  for (let i = currentIndex; i < requests.length; i++) {
+    result.push(requests[i]);
+    start = requests[i];
+  }
+
+  // Change the direction and move towards the lower sector until the start
+  direction = -1;
+  result.push(direction === 1 ? 0 : maxTrack); // Add the disk boundaries
+
+  for (let i = currentIndex - 1; i >= 0; i--) {
+    result.push(requests[i]);
+    start = requests[i];
+  }
+  console.log(`Scan result is ${result}`);
+  return result;
 }
 
 function cscanDiskScheduling(requests, initialPosition, maxTrack) {
@@ -273,7 +337,7 @@ function cscanDiskScheduling(requests, initialPosition, maxTrack) {
 
   // Add the maximum track to the order of accesses
   orderOfAccesses.push(maxTrack);
-
+  console.log(`CSCAN result is ${orderOfAccesses}`);
   // Return the order of accesses
   return orderOfAccesses;
 }
@@ -391,9 +455,10 @@ function start_animation(){
     //animateRotation(convert_sectors_to_degrees([...access_location]));
     setTimeout(() => animateRotation(convert_sectors_to_degrees([...access_location]),access_location),1000);
   } else if (document.getElementById('scan').checked){
-    var order = scanDiskScheduling(convert_sectors_to_degrees(access_location),access_location);
+    //var order = scanDiskScheduling(convert_sectors_to_degrees(access_location),access_location,direction,360);
+    var order = scanDiskScheduling(access_location,start_location,direction,num_sectors);
     console.log(order);
-    setTimeout(() => animateRotation(order, start_location, direction, num_sectors),1000);
+    setTimeout(() => animateRotation(convert_sectors_to_degrees(order), order),1000);
   } else if (document.getElementById('look').checked){
     alert("look");
     var order = lookDiskScheduling(access_location, start_location, direction);
