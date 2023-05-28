@@ -4,7 +4,7 @@
   <title>Dining Philosophers</title>
   <style>
     body {
-      background-color: #f7f7f7;
+      background-color: #f9f9f9;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -14,17 +14,19 @@
 
     h1 {
       margin-bottom: 20px;
+      font-size: 75px;
     }
 
     p {
       margin-bottom: 20px;
-      max-width: 600px;
+      max-width: 800px;
       text-align: center;
+      font-size: 30px;
     }
 
     .start-button {
       padding: 10px 20px;
-      font-size: 16px;
+      font-size: 25px;
       background-color: #4caf50;
       color: #fff;
       border: none;
@@ -38,12 +40,14 @@
 </head>
 <body>
   <h1>Dining Philosophers Simulation</h1>
-  <p>
-    The Dining Philosophers problem is a classic synchronization problem in computer science. It illustrates the challenges of resource allocation and deadlock prevention in concurrent systems.
-  </p>
-  <p>
-    In this simulation, a number of philosophers sit around a table, and each philosopher alternates between thinking and eating. They share a set of forks placed between them, and to eat, a philosopher must acquire both the left and right fork.
-  </p>
+  <div>
+    <p>
+      The Dining Philosophers problem is a classic synchronization problem in computer science. It illustrates the challenges of resource allocation and deadlock prevention in concurrent systems.
+    </p>
+    <p>
+      In this simulation, a number of philosophers sit around a table, and each philosopher alternates between thinking and eating. They share a set of forks placed between them, and to eat, a philosopher must acquire both the left and right fork.
+    </p>
+  </div>
   <button class="start-button" onclick="window.location.href='simulation.html'">Start Simulation</button>
 </body>
 </html>
