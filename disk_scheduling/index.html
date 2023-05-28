@@ -109,8 +109,11 @@
   </br>
     <button name="animate" onclick="start_animation()">Animate</button>
 
+    <canvas id="myChart"></canvas>
+
   </center>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     
     // JavaScript loop to create sector lines and labels
@@ -152,6 +155,47 @@
       var currentIndex = 0;
       console.log("The degrees list is ",degreesList);
       console.log("The sectors list is ",sectorsList);
+
+      function makeChart(){
+        const canvas = document.getElementById('myChart');
+
+      // Prepare data for the chart
+      const data = {
+        labels : Array.from({length: sectorsList.length}, (_, i) => i + 1),
+        datasets: [{
+          label: 'Accesses',
+          data: sectorsList,
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      };
+      
+      // Create the chart
+      const chart = new Chart(canvas, {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Sector Accessed'
+              },
+              beginAtZero: true
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Time of Access'
+              }
+            }
+          }
+        }
+      });
+      }
+
       function animateNextRotation() {
         var targetRotation = degreesList[currentIndex];
         var targetSector = sectorsList[currentIndex];
@@ -170,9 +214,12 @@
           }
         });
       }
+      makeChart();
       animateNextRotation();
+
+      
     }
-      animateRotation(degreesList);
+    animateRotation(degreesList);
 
   function sstfDiskScheduling(requests, initialPosition) {
   // Create a copy of the requests array to avoid modifying the original array
@@ -447,6 +494,8 @@ function start_animation(){
   console.log(`Start location is ${start_location}`);
   console.log(`Number of sectors are ${num_sectors}`);
   console.log(`The direction you want to move in is ${direction}`);
+  
+  var order;
 
   seekHead.style.transform = `rotate(${convert_sectors_to_degrees([start_location])[0]}deg)`;
   setTimeout(() => alert("The animation will start now!"),1000);
@@ -460,7 +509,6 @@ function start_animation(){
     console.log(order);
     setTimeout(() => animateRotation(convert_sectors_to_degrees(order), order),1000);
   } else if (document.getElementById('look').checked){
-    alert("look");
     var order = lookDiskScheduling(access_location, start_location, direction);
     console.log(order);
     setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
@@ -469,7 +517,6 @@ function start_animation(){
     console.log(order);
     setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
   } else if (document.getElementById('cscan').checked){
-    alert("cscan");
     var order = cscanDiskScheduling(access_location, start_location, num_sectors);
     console.log(order);
     setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
@@ -478,6 +525,8 @@ function start_animation(){
     var order = sstfDiskScheduling(access_location,start_location);
     setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
   }
+
+  
 }
 
 
