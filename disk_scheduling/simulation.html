@@ -3,6 +3,10 @@
 <head>
   <style>
     /* CSS styles for ring visualization */
+    body {
+      font-family: sans-serif;
+      font-size: 20px;
+    }
     .ring {
       position: relative;
       width: 600px;
@@ -56,59 +60,125 @@
       background-color: red;
       transform-origin: bottom;
     }
-    
+    #algo-box {
+      display: flex;
+      background-color: rgba(0, 136, 232, 1);
+      flex-direction: column;
+      padding: 2.5vh;
+      padding-bottom: 5vh;
+      margin: auto;
+      width: 25vw;
+      border-radius: 20px;
+    }
+    #fcfs,#scan,#sstf,#look,#clook,#cscan{
+      position: relative;
+      left: 3vw;
+      height: 3vh;
+    }
+    #param-box{
+      display: flex;
+      background-color: rgba(0, 136, 232, 1);
+      flex-direction: column;
+      padding: 2.5vh;
+      padding-bottom: 5vh;
+      margin: auto;
+      width: 50vw;
+      border-radius: 20px;
+    }
+    label {
+      margin-left: 3vw;
+    }
+    #access_location,#start_location,#num_sectors,#dir{
+      margin-left:7vw;
+    }
+    button{
+      height:10vh;
+      width: 15vw;
+      font-size: 28px;
+      border: 2px solid rgba(0, 182, 198, 1);
+      background-color: rgba(0, 136, 232, 1);
+    }
+    button:hover {
+      background-color: rgba(0, 182, 198, 1);
+    }
+    input {
+      background-color: rgba(0, 182, 198, 1);
+      border: none;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 5px;
+      margin-bottom: 1vh;
+    }
+    canvas {
+      margin-top: 5vh;
+
+    }
   </style>
 </head>
 <body>
+  <center><h1>Disk Scheduling Simulator</h1></center>
   <div class="ring">
     <div class="outer-circle"></div>
     <div class="inner-circle"></div>
     <div class="seek-head"></div>
   </div>
 
-  <center>
-    <h1>Select the Algorithm that you want to see in action:</h1>
-    <div>
+  
+    <center><h1>Select the Algorithm that you want to see in action:</h1></center>
+    <div id="algo-box">
+      <div>
+        <center><h3 style="margin-top:1vh;"><u>Algorithm</u></h3></center>
+
       <input type="radio" name="choice" value="First Come First Serve" id="fcfs"/>
-      <label for="fcfs">First Come First Serve</label>
+      <label for="fcfs">First Come First Serve</label></div>
 
+      <div>
       <input type="radio" name="choice" value="Shortest Seek Time First" id="sstf"/>
-      <label for="sstf">Shortest Seek Time First</label>
+      <label for="sstf">Shortest Seek Time First</label></div>
       
+      <div>
       <input type="radio" name="choice" value="SCAN" id="scan"/>
-      <label for="scan">SCAN</label>
+      <label for="scan">SCAN</label></div>
       
+      <div>
       <input type="radio" name="choice" value="C-SCAN" id="cscan"/>
-      <label for="cscan">C-SCAN</label>
+      <label for="cscan">C-SCAN</label></div>
 
+      <div>
       <input type="radio" name="choice" value="Look" id="look"/>
-      <label for="look">Look</label>
+      <label for="look">Look</label></div>
 
+      <div>
       <input type="radio" name="choice" value="C-Look" id="clook" />
-      <label for="clook">C-Look</label>
+      <label for="clook">C-Look</label></div>
     </div>
     
-    
+  
   </br>
+  <div id="param-box">
+    <center><h3 style="margin-top:1vh;"><u>Parameters</u></h3></center>
+  <div>
     <input type="text" placeholder="Enter the seek locations here" id="access_location" value="5 3 2 1 8 10 6"/>
-    <label for="access_location">Access Locations (Space Separated): </label>
-  </br>
+    <label for="access_location" style="margin-left:0vw;">Access Locations (Space Separated)</label></div>
+  
+  <div>
     <input type="text" placeholder="Start Location" id="start_location" value="3"/>
-    <label for="start_location">Start Location</label>
-  </br>
+    <label for="start_location" style="margin-left:0vw;">Start Location</label></div>
+  <div>
   <input type="text" placeholder="Number of sectors" id="num_sectors" value="10"/>
-    <label for="num_sectors">Number of Sectors</label>
-  </br>
-    <div>
+    <label for="num_sectors" style="margin-left:0vw;">Number of Sectors</label></div>
+    <div id="dir">
       <p>Which direction do you want to move in?</p>
       <input type="radio" name="dir" value="left" id="left" />
-      <label for="left">Left</label>
+      <label for="left" style="margin-left:0vw;">Left</label>
       <input type="radio" name="dir" value="right" id="right" />
-      <label for="right">Right</label>
+      <label for="right" style="margin-left:0vw;">Right</label>
     </div>
+  </div>
   </br>
+  <center>
     <button name="animate" onclick="start_animation()">Animate</button>
-
+</br>
     <canvas id="myChart"></canvas>
 
   </center>
@@ -176,6 +246,15 @@
         type: 'line',
         data: data,
         options: {
+          plugins: {
+            title: {
+              display:true,
+              text: 'Order of Accesses',
+              font: {
+                size: 36,
+              }
+            }
+          },
           responsive: true,
           scales: {
             y: {
@@ -255,74 +334,7 @@
 
   return orderOfAccesses;
 }
-/*
-function scanDiskScheduling(requests, initialPosition, direction = 'left', maxTrack) {
-  maxTrack = 360;
-  // Create a copy of the requests array to avoid modifying the original array
-  const remainingRequests = [...requests];
-  // Initialize the current head position
-  let currentPosition = initialPosition*57.29;
-  // Initialize the array to store the order of accesses
-  const orderOfAccesses = [];
 
-  // Sort the requests in ascending order
-  remainingRequests.sort((a, b) => a - b);
-
-  while (remainingRequests.length > 0) {
-    console.log(remainingRequests.length);
-    // Find the next request in the current scan direction
-    let nextRequestIndex = -1;
-
-    if (direction === 'left') {
-      // Find the request with the highest track value less than or equal to the current position
-      for (let i = remainingRequests.length - 1; i >= 0; i--) {
-        if (remainingRequests[i] <= currentPosition) {
-          nextRequestIndex = i;
-          break;
-        }
-      }
-    } else if (direction === 'right') {
-      // Find the request with the lowest track value greater than or equal to the current position
-      for (let i = 0; i < remainingRequests.length; i++) {
-        if (remainingRequests[i] >= currentPosition) {
-          nextRequestIndex = i;
-          break;
-        }
-      }
-    }
-
-    // If no request is found in the current direction, change direction
-    if (nextRequestIndex === -1) {
-      if (direction === 'left') {
-        direction = 'right';
-        continue; // Skip to the next iteration
-      } else if (direction === 'right') {
-        direction = 'left';
-        continue; // Skip to the next iteration
-      }
-    }
-
-    // Move the head to the chosen request
-    currentPosition = remainingRequests[nextRequestIndex];
-
-    // Add the accessed location to the order of accesses
-    orderOfAccesses.push(remainingRequests[nextRequestIndex]);
-    console.log(nextRequestIndex);
-
-    // Remove the accessed location from the remaining requests
-    remainingRequests.splice(nextRequestIndex, 1);
-  }
-
-  // If there are remaining requests, add the maximum track to the order of accesses
-  if (remainingRequests.length > 0) {
-    orderOfAccesses.push(maxTrack);
-  }
-
-  console.log("The order of accesses in scan is");
-  console.log(orderOfAccesses);
-
-  return orderOfAccesses;
-}*/
 
 function scanDiskScheduling(requests, start, dir = "left",maxTrack) {
   let direction;// 1 for moving towards the higher sector, -1 for moving towards the lower sector
@@ -526,7 +538,6 @@ function start_animation(){
     setTimeout(() => animateRotation(convert_sectors_to_degrees(order),order));
   }
 
-  
 }
 
 
