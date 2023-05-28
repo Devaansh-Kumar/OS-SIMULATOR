@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Disk Scheduling Theory</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 40px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    h2 {
+      color: #666;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+    button {
+      position: static;
+      float: inline-end;
+      top: 3vh;
+      height:7vh;
+      width: 12vw;
+      font-size: 28px;
+      border: 2px solid rgba(0, 182, 198, 1);
+      background-color: rgba(0, 136, 232, 1);
+      border-radius: 5vw;
+    }
+    button:hover {
+      background-color: rgba(0, 182, 198, 1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Disk Scheduling Theory 
+  <a href="simulation.html"><button>Simulator</button></h1></a>
+
+  <h2>First-Come, First-Served (FCFS)</h2>
+  <p>
+    FCFS is the simplest disk scheduling algorithm where requests are served in the order they arrive.
+    While it follows a fair order of serving requests based on arrival time, it may result in poor performance
+    when requests are scattered across the disk. This can lead to increased seek time, as the head moves
+    continuously from one request to the next without considering their proximity to the current head position.
+  </p>
+
+  <h2>SCAN</h2>
+  <p>
+    SCAN is an elevator algorithm that reduces the average seek time by continuously moving the head in one
+    direction and servicing requests along the way. This provides a more efficient order of serving requests
+    compared to FCFS. However, SCAN may cause increased waiting time for requests located in the opposite
+    direction of head movement, as it does not consider their proximity to the current head position.
+  </p>
+
+  <h2>Circular SCAN (C-SCAN)</h2>
+  <p>
+    C-SCAN is a variant of the SCAN algorithm that aims to provide a more uniform distribution of waiting time
+    for requests. Instead of reversing direction, the head jumps to the other end of the disk and starts
+    servicing requests again. While it eliminates the increased waiting time for requests located between the
+    head position and the start of the disk, it may result in increased waiting time for requests in the
+    opposite direction.
+  </p>
+
+  <h2>LOOK</h2>
+  <p>
+    LOOK is an improvement over the SCAN algorithm, as it changes direction when there are no more requests in
+    the current direction. This reduces the average seek time compared to SCAN, as it avoids unnecessary
+    movement to the end of the disk. LOOK provides a more efficient distribution of waiting time for requests,
+    considering their proximity to the current head position.
+  </p>
+
+  <h2>Circular LOOK (C-LOOK)</h2>
+  <p>
+    C-LOOK is a variant of the LOOK algorithm that provides a more uniform distribution of waiting time for
+    requests. Similar to C-SCAN, the head jumps to the other end of the disk when there are no more requests
+    in the current direction. C-LOOK eliminates the unnecessary movement to the end of the disk, resulting in
+    improved performance compared to LOOK.
+  </p>
+
+  <h2>Shortest Seek Time First (SSTF)</h2>
+  <p>
+    SSTF selects the request that is closest to the current head position, minimizing the seek time by choosing
+    the shortest seek time for each request. It can result in a more optimal average seek time compared to other
+    algorithms. However, SSTF may cause starvation for requests located further away from the current head
+    position, as it always prioritizes the closest request.
+  </p>
+</body>
+</html>
