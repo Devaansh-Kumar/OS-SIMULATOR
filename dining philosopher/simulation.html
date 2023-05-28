@@ -6,16 +6,15 @@
     body {
       background-color: #f7f7f7;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
     .container {
+      margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
     }
 
     .fork {
@@ -49,13 +48,6 @@
 
     .philosopher.thinking {
       background-color: #2196f3;
-    }
-
-    #input-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
     }
 
     label {
@@ -110,12 +102,14 @@
   </style>
 </head>
 <body>
+  <div class="container" id="container"></div>
+
   <div id="input-container">
     <label for="philosopher-input">Number of Philosophers:</label>
     <input type="number" id="philosopher-input" min="2" value="5">
     <button id="start-button">Start Simulation</button>
   </div>
-  <div class="container" id="container"></div>
+  
   <div class="action-buttons" id="action-buttons"></div>
 
   <script>
