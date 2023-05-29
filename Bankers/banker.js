@@ -263,7 +263,7 @@ var res,pro;
 							{
 								console.log("Deadlock");
                                 var li = document.createElement("li");
-                                li.appendChild(document.createTextNode("Deadlock"));
+                                li.appendChild(document.createTextNode("Deadlock/Unsafe State"));
                                 prints.appendChild(li);
 								break;
 							}
