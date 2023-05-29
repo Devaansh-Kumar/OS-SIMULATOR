@@ -1,7 +1,7 @@
 # This is the list of people who contributed to this project
 
-- 211CS111 CALVIN DOMINIC FERNANDES
-- 211CS112 CHAITRA SRIKUMAR
+- 211CS111 CALVIN DOMINIC FERNANDES    -> Page Replacement
+- 211CS112 CHAITRA SRIKUMAR            -> 
 - 211CS113 CHANDDAN H                  -> File Allocation
 - 211CS114 CHINMAY SHARMA T            -> Process Scheduling
 - 211CS115 CHINMAYA SAHU               -> Disk Scheduling
